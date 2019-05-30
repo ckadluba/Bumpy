@@ -1,19 +1,15 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Bumpy.Data.Interfaces;
 using Bumpy.Models;
-using Microsoft.AspNetCore.Mvc;
 
-namespace Bumpy.Controllers
+namespace Bumpy.Data
 {
-    [Route("bumpy/[controller]")]
-    [ApiController]
-    public class QuotesController : ControllerBase
+    public class QuotesRepository : IQuotesRepository
     {
         private readonly QuoteModel[] _quotes;
 
-        public QuotesController()
+        public QuotesRepository()
         {
             _quotes = new QuoteModel[]
             {
@@ -23,16 +19,9 @@ namespace Bumpy.Controllers
             };
         }
 
-        // GET bumpy/quotes
-        [HttpGet]
-        public ActionResult<IEnumerable<QuoteModel>> Get()
-        {
-            return _quotes;
-        }
+        public IEnumerable<QuoteModel> GetQuotes() => _quotes;
 
-        // GET bumpy/quotes/1
-        [HttpGet("{id}")]
-        public ActionResult<QuoteModel> Get(int id)
+        public QuoteModel GetQuote(int id)
         {
             var quote = _quotes.SingleOrDefault(q => q.Id == id);
             if (quote != null)
@@ -40,7 +29,7 @@ namespace Bumpy.Controllers
                 return quote;
             }
 
-            return NotFound();
+            return null;
         }
     }
 }
