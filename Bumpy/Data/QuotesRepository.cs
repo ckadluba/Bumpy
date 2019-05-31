@@ -19,7 +19,7 @@ namespace Bumpy.Data
             };
         }
 
-        public IEnumerable<QuoteModel> GetQuotes() => _quotes;
+        public ICollection<QuoteModel> GetQuotes() => _quotes;
 
         public QuoteModel GetQuote(int id)
         {

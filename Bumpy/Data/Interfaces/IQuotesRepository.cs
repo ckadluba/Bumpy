@@ -5,7 +5,7 @@ namespace Bumpy.Data.Interfaces
 {
     public interface IQuotesRepository
     {
-        IEnumerable<QuoteModel> GetQuotes();
+        ICollection<QuoteModel> GetQuotes();
         QuoteModel GetQuote(int id);
     }
 }
