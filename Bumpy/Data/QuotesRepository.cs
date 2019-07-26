@@ -7,11 +7,11 @@ namespace Bumpy.Data
 {
     public class QuotesRepository : IQuotesRepository
     {
-        private readonly QuoteModel[] _quotes;
+        private readonly List<QuoteModel> _quotes;
 
         public QuotesRepository()
         {
-            _quotes = new QuoteModel[]
+            _quotes = new List<QuoteModel>
             {
                 new QuoteModel { Id =  1, Text = "Hallo hier spricht Ilsa Gold. Dies ist eine Grussbotschaft an alle Techno- und Housefreunde."},
                 new QuoteModel { Id =  2, Text = "There is a ranch they call number 51."},
@@ -19,7 +19,7 @@ namespace Bumpy.Data
             };
         }
 
-        public ICollection<QuoteModel> GetQuotes() => _quotes;
+        public IEnumerable<QuoteModel> GetQuotes() => _quotes;
 
         public QuoteModel GetQuote(int id)
         {

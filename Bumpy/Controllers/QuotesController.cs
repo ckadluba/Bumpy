@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Bumpy.Data.Interfaces;
-using Bumpy.Models;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
+using Bumpy.Models;
+using Bumpy.Data.Interfaces;
+using System.Linq;
 
 namespace Bumpy.Controllers
 {
@@ -13,16 +12,16 @@ namespace Bumpy.Controllers
     {
         private readonly IQuotesRepository _quotesRepository;
 
-        public QuotesController(IServiceProvider services)
+        public QuotesController(IQuotesRepository quotesRepository)
         {
-            _quotesRepository = services.GetService<IQuotesRepository>();
+            _quotesRepository = quotesRepository;
         }
 
         // GET bumpy/quotes
         [HttpGet]
         public ActionResult<IEnumerable<QuoteModel>> Get()
         {
-            return Ok(_quotesRepository.GetQuotes());
+            return _quotesRepository.GetQuotes().ToList();
         }
 
         // GET bumpy/quotes/1
