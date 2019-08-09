@@ -2,7 +2,7 @@ namespace Bumpy.Models
 {
     public class QuoteModel
     {
-        public int Id;
-        public string Text;
+        public int Id { get; set;  }
+        public string Text { get; set; }
     }
 }
