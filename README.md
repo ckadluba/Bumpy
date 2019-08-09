@@ -1,3 +1,5 @@
+[![Build Status](https://kadluba.visualstudio.com/Bumpy/_apis/build/status/ckadluba.Bumpy?branchName=master)](https://kadluba.visualstudio.com/Bumpy/_build/latest?definitionId=2&branchName=master)
+
 # Bumpy
 A simple ASP.Net Core WebAPI application running in a Docker container.
 
