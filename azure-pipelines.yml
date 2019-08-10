@@ -7,13 +7,14 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   buildConfiguration: 'Release'
 
 steps:
 - task: UseDotNet@2
+  displayName: "Install Dot Net SDK"
   inputs:
     packageType: 'sdk'
     version: '3.0.100-preview7-012821'
@@ -23,6 +24,7 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: "Run Tests"
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
