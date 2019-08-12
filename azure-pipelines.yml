@@ -14,18 +14,21 @@ variables:
 
 steps:
 - task: UseDotNet@2
-  displayName: "Install Dot Net SDK"
+  displayName: "Install .NET Core 3 SDK"
   inputs:
     packageType: 'sdk'
     version: '3.0.100-preview7-012821'
     includePreviewVersions: true
 
 - script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+  displayName: 'Build'
 
 - task: DotNetCoreCLI@2
-  displayName: "Run Tests"
+  displayName: "Test"
   inputs:
     command: test
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+
+- script: docker build --rm -f "Bumpy\Dockerfile" -t bumpy:latest Bumpy
+  displayName: "Docker Build"
