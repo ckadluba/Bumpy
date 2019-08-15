@@ -11,7 +11,8 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  azureCrAddress: 'kadluba.azurecr.io'
+  azureCrUser: 'kadluba'
+  azureCrAddress: '$(arzureCrUser).azurecr.io'
   dockerImage: 'bumpy:latest'
 
 steps:
@@ -32,10 +33,8 @@ steps:
 #    projects: '**/*Tests/*.csproj'
 #    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
-- script: docker login -u $(azureCrUserId) -p $(pswd) $(azureCrAddress)
+- script: docker login -u $(azureCrUser) -p $(azureCrPassword) $(azureCrAddress)
   displayName: "Docker ACR Login"
-  env:
-    pswd: $(azureCrPassword)
 
 - script: docker build --rm -f "Bumpy\Dockerfile" -t $(dockerImage) Bumpy
   displayName: "Docker Build"
