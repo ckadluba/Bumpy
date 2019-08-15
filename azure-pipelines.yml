@@ -12,7 +12,7 @@ pool:
 variables:
   buildConfiguration: 'Release'
   azureCrUser: 'kadluba'
-  azureCrAddress: '$(arzureCrUser).azurecr.io'
+  azureCrAddress: '$(azureCrUser).azurecr.io'
   dockerImage: 'bumpy:latest'
 
 steps:
