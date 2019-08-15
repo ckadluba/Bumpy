@@ -11,6 +11,8 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  azureCrAddress: 'kadluba.azurecr.io'
+  dockerImage: 'bumpy:latest'
 
 steps:
 - task: UseDotNet@2
@@ -30,5 +32,11 @@ steps:
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
-- script: docker build --rm -f "Bumpy\Dockerfile" -t bumpy:latest Bumpy
+- script: docker login -u $(azureCrUserId) -p $(azureCrPassword) $(azureCrAddress)
+  displayName: "Docker ACR Login"
+
+- script: docker build --rm -f "Bumpy\Dockerfile" -t $(dockerImage) Bumpy
   displayName: "Docker Build"
+
+- script: docker push $(azureCrAddress)/$(dockerImage)
+  displayName: "Docker Push Image to ACR"
