@@ -7,7 +7,7 @@ WORKDIR /src
 COPY ["Bumpy.csproj", "./"]
 RUN dotnet restore "./Bumpy.csproj"
 COPY . .
-WORKDIR "/src/."
+WORKDIR /src
 RUN dotnet build "Bumpy.csproj" -c Release -o /app
 
 FROM build AS publish
