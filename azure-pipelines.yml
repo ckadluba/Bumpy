@@ -37,7 +37,7 @@ steps:
 - script: docker login -u $(azureCrUser) -p $(azureCrPassword) $(azureCrAddress)
   displayName: "Docker ACR Login"
 
-- script: docker build --rm -f "Bumpy/Dockerfile" -t $dockerTag Bumpy
+- script: docker build --rm -f "Bumpy/Dockerfile" -t $(dockerTag) Bumpy
   displayName: "Docker Build"
 
 - script: docker push $dockerTag
