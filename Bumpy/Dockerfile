@@ -1,8 +1,8 @@
-FROM microsoft/dotnet:3.0-aspnetcore-runtime AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-stretch-slim AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/dotnet:3.0-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-stretch AS build
 WORKDIR /src
 COPY ["Bumpy.csproj", "./"]
 RUN dotnet restore "./Bumpy.csproj"
