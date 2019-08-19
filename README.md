@@ -11,7 +11,8 @@ A simple ASP.Net Core WebAPI application running in a Docker container.
     - Collects and publishes results and code coverage
 * Docker build
     - Triggered when validation build succeeds
-* Create a release in which deploys to ACS or AKS
+    - Push image to docker.io registry too
+* Create a release which deploys to ACS or AKS
 * Program enhancements
     - Read data from Azure SQL or Cosmos DB
     - Use Azure Service Bus
