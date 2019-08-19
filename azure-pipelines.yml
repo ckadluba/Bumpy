@@ -14,6 +14,7 @@ variables:
   azureCrUser: 'kadluba'
   azureCrAddress: '$(azureCrUser).azurecr.io'
   dockerImage: 'bumpy:latest'
+  dockerTag: '$(azureCrAddress)/samples/$(dockerImage)'
 
 steps:
 #- task: UseDotNet@2
@@ -36,8 +37,8 @@ steps:
 - script: docker login -u $(azureCrUser) -p $(azureCrPassword) $(azureCrAddress)
   displayName: "Docker ACR Login"
 
-- script: docker build --rm -f "Bumpy/Dockerfile" -t $(dockerImage) Bumpy
+- script: docker build --rm -f "Bumpy/Dockerfile" -t $dockerTag Bumpy
   displayName: "Docker Build"
 
-- script: docker push $(dockerImage)
+- script: docker push $dockerTag
   displayName: "Docker Push Image to ACR"
