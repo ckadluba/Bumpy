@@ -40,5 +40,5 @@ steps:
 - script: docker build --rm -f "Bumpy/Dockerfile" -t $(dockerTag) Bumpy
   displayName: "Docker Build"
 
-- script: docker push $dockerTag
+- script: docker push $(dockerTag)
   displayName: "Docker Push Image to ACR"
