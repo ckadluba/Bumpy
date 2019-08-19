@@ -39,5 +39,5 @@ steps:
 - script: docker build --rm -f "Bumpy/Dockerfile" -t $(dockerImage) Bumpy
   displayName: "Docker Build"
 
-- script: docker push $(azureCrAddress)/$(dockerImage)
+- script: docker push $(dockerImage)
   displayName: "Docker Push Image to ACR"
