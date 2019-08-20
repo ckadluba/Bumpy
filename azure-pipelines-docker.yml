@@ -1,7 +1,5 @@
 # Bumpy Docker build: build app in a Docker image and publish to registry
 
-trigger: none
-
 pool:
   vmImage: 'ubuntu-latest'
 
