@@ -1,39 +1,17 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# Bumpy Docker build: build app in a Docker image and publish to registry
 
-trigger:
-- master
+trigger: none
 
 pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
   azureCrUser: 'kadluba'
   azureCrAddress: '$(azureCrUser).azurecr.io'
   dockerImage: 'bumpy:latest'
   dockerTag: '$(azureCrAddress)/samples/$(dockerImage)'
 
 steps:
-#- task: UseDotNet@2
-#  displayName: "Install .NET Core 3 SDK"
-#  inputs:
-#    packageType: 'sdk'
-#    version: '3.0.100-preview7-012821'
-#    includePreviewVersions: true
-
-#- script: dotnet build --configuration $(buildConfiguration)
-#  displayName: 'Build'
-
-#- task: DotNetCoreCLI@2
-#  displayName: "Test"
-#  inputs:
-#    command: test
-#    projects: '**/*Tests/*.csproj'
-#    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-
 - script: docker login -u $(azureCrUser) -p $(azureCrPassword) $(azureCrAddress)
   displayName: "Docker ACR Login"
 
