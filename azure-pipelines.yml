@@ -21,6 +21,8 @@ stages:
         includePreviewVersions: true
     - script: dotnet build --configuration $(buildConfiguration)
       displayName: 'Build'
+- stage: Test
+  jobs:
   - job: Test
     pool: 
       vmImage: 'windows-latest'
