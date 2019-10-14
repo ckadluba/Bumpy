@@ -12,15 +12,12 @@ variables:
 stages:
 - stage: Build
   jobs:
-  - job: Build
+  - job: "BuildPush"
+    displayName: "Build and Push"
     steps:
     - script: docker login -u $(azureCrUser) -p $(azureCrPassword) $(azureCrAddress)
       displayName: "Docker ACR Login"
     - script: docker build --rm -f "Bumpy/Dockerfile" -t $(dockerTag) Bumpy
       displayName: "Docker Build"
-- stage: Push
-  jobs:
-  - job: Push
-    steps:
     - script: docker push $(dockerTag)
-    displayName: "Docker Push Image to ACR"
+      displayName: "Docker Push Image to ACR"
