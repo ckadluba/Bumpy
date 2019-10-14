@@ -1,28 +1,33 @@
-# Bumpy validation build: Builds, tests and shows results and code coverage on each commit to master
+# Bumpy multi-stage validation build: Builds, tests and shows results and code coverage on each commit to master
 
 trigger:
 - master
 
-pool:
-  vmImage: 'windows-latest'
-
 variables:
   buildConfiguration: 'Release'
 
-steps:
-- task: UseDotNet@2
-  displayName: "Install .NET Core 3 SDK"
-  inputs:
-    packageType: 'sdk'
-    version: '3.0.100-preview8-013656'
-    includePreviewVersions: true
-
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'Build'
-
-- task: DotNetCoreCLI@2
-  displayName: "Test"
-  inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+stages: 
+- stage: Build
+  jobs: 
+  - job: Build
+    pool: 
+      vmImage: 'windows-latest'
+    steps:
+    - task: UseDotNet@2
+      displayName: "Install .NET Core 3 SDK"
+      inputs:
+        packageType: 'sdk'
+        version: '3.0.100-preview8-013656'
+        includePreviewVersions: true
+    - script: dotnet build --configuration $(buildConfiguration)
+      displayName: 'Build'
+  - job: Test
+    pool: 
+      vmImage: 'windows-latest'
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: "Test"
+      inputs:
+        command: test
+        projects: '**/*Tests/*.csproj'
+        arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
