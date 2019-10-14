@@ -1,4 +1,4 @@
-# Bumpy Docker build: build app in a Docker image and publish to registry
+# Bumpy multi-stage Docker build: build app in a Docker image and publish to registry
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -9,12 +9,18 @@ variables:
   dockerImage: 'bumpy:latest'
   dockerTag: '$(azureCrAddress)/samples/$(dockerImage)'
 
-steps:
-- script: docker login -u $(azureCrUser) -p $(azureCrPassword) $(azureCrAddress)
-  displayName: "Docker ACR Login"
-
-- script: docker build --rm -f "Bumpy/Dockerfile" -t $(dockerTag) Bumpy
-  displayName: "Docker Build"
-
-- script: docker push $(dockerTag)
-  displayName: "Docker Push Image to ACR"
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    steps:
+    - script: docker login -u $(azureCrUser) -p $(azureCrPassword) $(azureCrAddress)
+      displayName: "Docker ACR Login"
+    - script: docker build --rm -f "Bumpy/Dockerfile" -t $(dockerTag) Bumpy
+      displayName: "Docker Build"
+- stage: Push
+  jobs:
+  - job: Push
+    steps:
+    - script: docker push $(dockerTag)
+    displayName: "Docker Push Image to ACR"
