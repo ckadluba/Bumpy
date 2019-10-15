@@ -4,6 +4,7 @@
 A simple ASP.Net Core WebAPI application running in a Docker container.
 
 ## To do
+* Update code and pipeline to .NET Core 3.0 RTM
 * Make Docker login secure (see warning output of command)
 * Push image to docker.io registry too
 * Create a release which deploys to ACI
