@@ -1,8 +1,8 @@
 using Xunit;
-using Bumpy.Data;
 using System.Linq;
+using Bumpy.Infrastructure.Data;
 
-namespace Bumpy.Tests.Data
+namespace Bumpy.Infrastructure.Tests.Data
 {
     public class QuotesRepositoryTests
     {

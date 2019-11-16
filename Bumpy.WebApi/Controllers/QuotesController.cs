@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Bumpy.Models;
-using Bumpy.Data.Interfaces;
 using System.Linq;
+using Bumpy.Infrastructure.Data.Interfaces;
+using Bumpy.Domain;
 
-namespace Bumpy.Controllers
+namespace Bumpy.WebApi.Controllers
 {
-    [Route("bumpy/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class QuotesController : ControllerBase
     {

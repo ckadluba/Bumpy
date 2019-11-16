@@ -1,11 +1,11 @@
 using System.Collections.Generic;
+using Bumpy.Domain;
+using Bumpy.Infrastructure.Data.Interfaces;
+using Bumpy.WebApi.Controllers;
 using Moq;
 using Xunit;
-using Bumpy.Models;
-using Bumpy.Data.Interfaces;
-using Bumpy.Controllers;
 
-namespace Bumpy.Tests.Controllers
+namespace Bumpy.WebApi.Tests.Controllers
 {
     public class QuotesControllerTests
     {

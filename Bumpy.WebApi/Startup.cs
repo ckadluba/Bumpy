@@ -1,10 +1,10 @@
+using Bumpy.Infrastructure.Data;
+using Bumpy.Infrastructure.Data.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Bumpy.Data;
-using Bumpy.Data.Interfaces;
 
 namespace Bumpy
 {
