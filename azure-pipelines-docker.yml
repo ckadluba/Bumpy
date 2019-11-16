@@ -6,18 +6,18 @@ pool:
 variables:
   azureCrUser: 'kadluba'
   azureCrAddress: '$(azureCrUser).azurecr.io'
-  dockerImage: 'bumpy:latest'
+  dockerImage: 'bumpy-webapi:latest'
   dockerTag: '$(azureCrAddress)/samples/$(dockerImage)'
 
 stages:
-- stage: Build
+- stage: Build-WebApi
   jobs:
   - job: "BuildPush"
-    displayName: "Build and Push"
+    displayName: "Build and Push WebApi"
     steps:
     - script:  echo "$(azureCrPassword)" | docker login -u $(azureCrUser) --password-stdin $(azureCrAddress)
       displayName: "Docker ACR Login"
-    - script: docker build --rm -f "Bumpy/Dockerfile" -t $(dockerTag) Bumpy
-      displayName: "Docker Build"
+    - script: docker build --rm -f "Bumpy.WebApi/Dockerfile" -t $(dockerTag) Bumpy
+      displayName: "Docker WebApi Build"
     - script: docker push $(dockerTag)
-      displayName: "Docker Push Image to ACR"
+      displayName: "Docker Push WebApi Image to ACR"
