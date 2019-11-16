@@ -15,7 +15,7 @@ stages:
   - job: "BuildPush"
     displayName: "Build and Push"
     steps:
-    - script: docker login -u $(azureCrUser) -p $(azureCrPassword) $(azureCrAddress)
+    - script:  echo "$(azureCrPassword)" | docker login -u $(azureCrUser) --password-stdin $(azureCrAddress)
       displayName: "Docker ACR Login"
     - script: docker build --rm -f "Bumpy/Dockerfile" -t $(dockerTag) Bumpy
       displayName: "Docker Build"
