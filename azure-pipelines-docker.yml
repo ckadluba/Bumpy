@@ -10,7 +10,7 @@ variables:
   dockerTag: '$(azureCrAddress)/samples/$(dockerImage)'
 
 stages:
-- stage: Build-WebApi
+- stage: BuildWebApi
   jobs:
   - job: "BuildPush"
     displayName: "Build and Push WebApi"
