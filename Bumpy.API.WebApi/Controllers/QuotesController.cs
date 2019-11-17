@@ -4,7 +4,7 @@ using System.Linq;
 using Bumpy.Infrastructure.Data.Interfaces;
 using Bumpy.Domain;
 
-namespace Bumpy.WebApi.Controllers
+namespace Bumpy.API.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

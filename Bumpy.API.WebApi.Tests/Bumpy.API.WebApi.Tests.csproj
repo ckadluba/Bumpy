@@ -14,8 +14,8 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bumpy.API.WebApi\Bumpy.API.WebApi.csproj" />
     <ProjectReference Include="..\Bumpy.Domain\Bumpy.Domain.csproj" />
     <ProjectReference Include="..\Bumpy.Infrastructure\Bumpy.Infrastructure.csproj" />
-    <ProjectReference Include="..\Bumpy.WebApi\Bumpy.WebApi.csproj" />
   </ItemGroup>
 </Project>
