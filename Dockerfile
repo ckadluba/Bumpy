@@ -4,10 +4,17 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-stretch AS build
 WORKDIR /src
-COPY ["Bumpy.WebApi.csproj", "./"]
-RUN dotnet restore "./Bumpy.WebApi.csproj"
 COPY . .
-WORKDIR /src
+WORKDIR /src/Bumpy.WebApi
+RUN dotnet restore "Bumpy.WebApi.csproj"
+
+WORKDIR /src/Bumpy.Domain
+RUN dotnet restore "Bumpy.Domain.csproj"
+
+WORKDIR /src/Bumpy.Infrastructure
+RUN dotnet restore "Bumpy.Infrastructure.csproj"
+
+WORKDIR /src/Bumpy.WebApi
 RUN dotnet build "Bumpy.WebApi.csproj" -c Release -o /app
 
 FROM build AS publish

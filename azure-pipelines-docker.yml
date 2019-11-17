@@ -17,7 +17,7 @@ stages:
     steps:
     - script:  echo "$(azureCrPassword)" | docker login -u $(azureCrUser) --password-stdin $(azureCrAddress)
       displayName: "Docker ACR Login"
-    - script: docker build --rm -f "Bumpy.WebApi/Dockerfile" -t $(dockerTag) Bumpy
+    - script: docker build --rm -f "Dockerfile" -t $(dockerTag) Bumpy.WebApi
       displayName: "Docker WebApi Build"
     - script: docker push $(dockerTag)
       displayName: "Docker Push WebApi Image to ACR"
