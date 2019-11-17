@@ -4,11 +4,12 @@
 A simple ASP.Net Core WebAPI DDD application running in a Docker container.
 
 ## To do
+* Repair VS Code tasks.json and launch.json to work again after DDD project restructuring
+* Track all items of this list as GitHub issues within a project
 * Update code and pipeline to .NET Core 3.0 RTM
 * Make Docker login secure (see warning output of command)
-* Create a release which deploys to ACI
 * Add another project with a gRPC API and build another Docker container
 * Create a release which deploys to ACI
 * Deploy all containers on AKS using Helm
-* Use Azure Service Bus
 * Create a frontend with Blazor
+* Use Azure Service Bus
