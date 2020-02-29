@@ -1,0 +1,40 @@
+@page "/getallquotes"
+
+@using Bumpy.Frontend.Data
+@inject BumpyQuotesClient BumpyQuotesClient
+
+<h1>All Quotes</h1>
+
+@if (quotes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Text</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var quote in quotes)
+            {
+                <tr>
+                    <td>@quote.Id</td>
+                    <td>@quote.Text</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<QuoteModel> quotes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        quotes = await BumpyQuotesClient.GetAllQuotesAsync();
+    }
+}
