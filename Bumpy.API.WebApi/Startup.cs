@@ -18,6 +18,7 @@ namespace Bumpy.API.WebApi
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Required to be non-static by framework.")]
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
@@ -26,6 +27,7 @@ namespace Bumpy.API.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Required to be non-static by framework.")]
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

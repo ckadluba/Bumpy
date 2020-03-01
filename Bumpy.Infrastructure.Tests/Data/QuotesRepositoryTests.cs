@@ -1,6 +1,6 @@
-using Xunit;
 using System.Linq;
 using Bumpy.Infrastructure.Data;
+using Xunit;
 
 namespace Bumpy.Infrastructure.Tests.Data
 {

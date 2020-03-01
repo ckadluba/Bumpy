@@ -1,32 +1,38 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Bumpy.Frontend.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Bumpy.Frontend.Data
 {
     public class BumpyQuotesClient
     {
-
         private readonly HttpClient _client;
+        private readonly QuotesServiceOptions _options;
 
-        public BumpyQuotesClient(HttpClient client)
+        public BumpyQuotesClient(HttpClient client, IOptions<QuotesServiceOptions> options)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
+            _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
 
-            // TODO read base uri from config Backend:BaseUri
-            _client.BaseAddress = new Uri("https://localhost:44345");
+            _client.BaseAddress = new Uri(_options.BaseAddress);
         }
 
-        public Task<List<QuoteModel>> GetAllQuotesAsync()
+        public async Task<List<QuoteModel>> GetAllQuotesAsync()
         {
-            // TODO read this from backend API
-            return Task.FromResult(new List<QuoteModel>
+            var response = await _client.GetAsync("/api/quotes");
+
+            response.EnsureSuccessStatusCode();
+
+            var responseStream = await response.Content.ReadAsStreamAsync();
+            var options = new JsonSerializerOptions
             {
-                new QuoteModel { Id =  4, Text = "Hallo hier spricht Euronymous. Dies ist eine Grussbotschaft an alle Techno- und Housefreunde."},
-                new QuoteModel { Id =  5, Text = "There is a ranch they call number 666."},
-                new QuoteModel { Id =  6, Text = "In meinem Keller unter Helvete fühl' ich mich sicher. Ich kanns euch verraten."}
-            });
+                PropertyNameCaseInsensitive = true,
+            };
+            return await JsonSerializer.DeserializeAsync<List<QuoteModel>>(responseStream, options);
         }
     }
 }

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using Bumpy.Infrastructure.Data.Interfaces;
 using Bumpy.Domain;
+using Bumpy.Infrastructure.Data.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Bumpy.API.WebApi.Controllers
 {
