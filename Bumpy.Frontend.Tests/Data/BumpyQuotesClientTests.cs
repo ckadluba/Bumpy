@@ -39,7 +39,7 @@ namespace Bumpy.Frontend.Tests.Data
             var httpResponseMock = new Mock<HttpResponseMessage>();
             var httpContentMock = new Mock<HttpContent>();
             var responseStreamMock = new Mock<Stream>();
-            httpClientMock.Setup(c => c.GetAsync(It.IsAny<string>())).ReturnsAsync<HttpClient, HttpResponseMessage>(httpResponseMock.Object);
+            httpClientMock.Setup(c => c.GetAsync(It.IsAny<Uri>())).ReturnsAsync<HttpClient, HttpResponseMessage>(httpResponseMock.Object);
             httpResponseMock.Setup(r => r.Content).Returns(httpContentMock.Object);
             httpContentMock.Setup(c => c.ReadAsStreamAsync()).ReturnsAsync<HttpContent, Stream>(responseStreamMock.Object);
 

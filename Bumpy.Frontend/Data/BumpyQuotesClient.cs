@@ -23,11 +23,11 @@ namespace Bumpy.Frontend.Data
 
         public async Task<List<QuoteModel>> GetAllQuotesAsync()
         {
-            var response = await _client.GetAsync("/api/quotes");
+            using var response = await _client.GetAsync(new Uri("/api/quotes"));
 
             response.EnsureSuccessStatusCode();
 
-            var responseStream = await response.Content.ReadAsStreamAsync();
+            using var responseStream = await response.Content.ReadAsStreamAsync();
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,

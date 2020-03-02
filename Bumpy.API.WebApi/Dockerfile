@@ -10,6 +10,7 @@ WORKDIR /src
 COPY ["Bumpy.API.WebApi/Bumpy.API.WebApi.csproj", "Bumpy.API.WebApi/"]
 COPY ["Bumpy.Infrastructure/Bumpy.Infrastructure.csproj", "Bumpy.Infrastructure/"]
 COPY ["Bumpy.Domain/Bumpy.Domain.csproj", "Bumpy.Domain/"]
+COPY ["StyleCop.ruleset", "."]
 RUN dotnet restore "Bumpy.API.WebApi/Bumpy.API.WebApi.csproj"
 COPY . .
 WORKDIR "/src/Bumpy.API.WebApi"

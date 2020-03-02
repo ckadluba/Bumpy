@@ -8,6 +8,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
 WORKDIR /src
 COPY ["Bumpy.Frontend/Bumpy.Frontend.csproj", "Bumpy.Frontend/"]
+COPY ["StyleCop.ruleset", "."]
 RUN dotnet restore "Bumpy.Frontend/Bumpy.Frontend.csproj"
 COPY . .
 WORKDIR "/src/Bumpy.Frontend"

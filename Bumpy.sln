@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumpy.API.WebApi", "Bumpy.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumpy.API.WebApi.Tests", "Bumpy.API.WebApi.Tests\Bumpy.API.WebApi.Tests.csproj", "{D33A42C2-0DAB-4C6F-9134-B4901AD2F685}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumpy.Frontend", "Bumpy.Frontend\Bumpy.Frontend.csproj", "{C993F680-27A4-4076-84D8-BA55A0DEE8E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumpy.Frontend", "Bumpy.Frontend\Bumpy.Frontend.csproj", "{C993F680-27A4-4076-84D8-BA55A0DEE8E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bumpy.Frontend.Tests", "Bumpy.Frontend.Tests\Bumpy.Frontend.Tests.csproj", "{4AB4AF93-105C-40B6-B193-73020D3E76E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bumpy.Frontend.Tests", "Bumpy.Frontend.Tests\Bumpy.Frontend.Tests.csproj", "{4AB4AF93-105C-40B6-B193-73020D3E76E9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1B36523A-C191-4CD4-919F-91942E919DDC}"
 	ProjectSection(SolutionItems) = preProject
@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		azure-pipelines-docker.yml = azure-pipelines-docker.yml
 		azure-pipelines.yml = azure-pipelines.yml
 		README.md = README.md
+		StyleCop.ruleset = StyleCop.ruleset
 	EndProjectSection
 EndProject
 Global
