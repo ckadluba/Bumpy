@@ -1,0 +1,16 @@
+
+version: '3'
+services:
+  bumpy-webapi:
+    image: kadluba/samples/bumpy-webapi
+    container_name: bumpy-webapi
+    ports:
+        - "8081:80"
+
+  bumpy-frontend:
+    image: kadluba/samples/bumpy-frontend
+    container_name: bumpy-frontend
+    environment:
+      webapi: bumpy-webapi
+    ports:
+        - "8080:80"
