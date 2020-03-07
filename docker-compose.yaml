@@ -1,16 +1,24 @@
 
 version: '3'
 services:
-  bumpy-webapi:
-    image: kadluba/samples/bumpy-webapi
-    container_name: bumpy-webapi
-    ports:
-        - "8081:80"
+  webapi:
+#    image: kadluba/samples/bumpy-webapi
+#    container_name: bumpy-webapi
+    build: 
+      context: .
+      dockerfile: Bumpy.API.WebApi/Dockerfile
+    expose:
+        - "80"
+        - "443"
 
-  bumpy-frontend:
-    image: kadluba/samples/bumpy-frontend
-    container_name: bumpy-frontend
-    environment:
-      webapi: bumpy-webapi
+  frontend:
+#    image: kadluba/samples/bumpy-frontend
+#    container_name: bumpy-frontend
+    build: 
+      context: .
+      dockerfile: Bumpy.Frontend/Dockerfile
+    depends_on:
+      - webapi
     ports:
         - "8080:80"
+        - "8081:443"

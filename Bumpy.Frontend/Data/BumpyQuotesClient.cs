@@ -23,7 +23,7 @@ namespace Bumpy.Frontend.Data
 
         public async Task<List<QuoteModel>> GetAllQuotesAsync()
         {
-            using var response = await _client.GetAsync(new Uri("/api/quotes"));
+            using var response = await _client.GetAsync("/api/quotes");
 
             response.EnsureSuccessStatusCode();
 
