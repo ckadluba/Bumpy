@@ -2,8 +2,6 @@
 version: '3'
 services:
   webapi:
-#    image: kadluba/samples/bumpy-webapi
-#    container_name: bumpy-webapi
     build: 
       context: .
       dockerfile: Bumpy.API.WebApi/Dockerfile
@@ -12,8 +10,6 @@ services:
         - "443"
 
   frontend:
-#    image: kadluba/samples/bumpy-frontend
-#    container_name: bumpy-frontend
     build: 
       context: .
       dockerfile: Bumpy.Frontend/Dockerfile
