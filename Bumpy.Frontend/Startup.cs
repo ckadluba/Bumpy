@@ -24,7 +24,7 @@ namespace Bumpy.Frontend
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.Configure<QuotesServiceOptions>(Configuration.GetSection("QuotesService"));
-            services.AddHttpClient<BumpyQuotesClient>();
+            services.AddSingleton<BumpyQuotesClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

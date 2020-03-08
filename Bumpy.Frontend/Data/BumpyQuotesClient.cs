@@ -1,39 +1,32 @@
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Bumpy.Frontend.Configuration;
+using Flurl;
+using Flurl.Http;
 using Microsoft.Extensions.Options;
 
 namespace Bumpy.Frontend.Data
 {
     public class BumpyQuotesClient
     {
-        private readonly HttpClient _client;
-        private readonly QuotesServiceOptions _options;
+        private readonly string _baseAddress;
 
-        public BumpyQuotesClient(HttpClient client, IOptions<QuotesServiceOptions> options)
+        public BumpyQuotesClient(IOptions<QuotesServiceOptions> options)
         {
-            _client = client ?? throw new ArgumentNullException(nameof(client));
-            _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
-
-            _client.BaseAddress = new Uri(_options.BaseAddress);
-        }
-
-        public async Task<List<QuoteModel>> GetAllQuotesAsync()
-        {
-            var requestUri = new Uri(_client.BaseAddress, "/api/quotes");
-            using var response = await _client.GetAsync(requestUri);
-
-            response.EnsureSuccessStatusCode();
-
-            using var responseStream = await response.Content.ReadAsStreamAsync();
-            var options = new JsonSerializerOptions
+            if (options == null)
             {
-                PropertyNameCaseInsensitive = true,
-            };
-            return await JsonSerializer.DeserializeAsync<List<QuoteModel>>(responseStream, options);
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            _baseAddress = options.Value.BaseAddress;
         }
+
+        public Task<List<QuoteModel>> GetAllQuotesAsync() =>
+            _baseAddress
+                .AppendPathSegment("api")
+                .AppendPathSegment("quotes")
+                .GetAsync()
+                .ReceiveJson<List<QuoteModel>>();
     }
 }
