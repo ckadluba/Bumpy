@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Bumpy.Frontend.Configuration;
 using Bumpy.Frontend.Data;
 using Flurl.Http.Testing;
 using Microsoft.Extensions.Options;
@@ -22,15 +21,13 @@ namespace Bumpy.Frontend.Tests.Data
         public async Task GetQuotesAsyncReturnsAllQuotes()
         {
             // Arrange
-            const string testBaseAddress = "https://example.com:8080";
+            var testBaseAddress = new Uri("https://example.com:8080");
             var testResponse = new List<QuoteModel> { new QuoteModel { Id = 0, Text = "Foo" } };
-            var optionsMock = new Mock<IOptions<QuotesServiceOptions>>();
-            optionsMock.Setup(o => o.Value).Returns(new QuotesServiceOptions { BaseAddress = testBaseAddress });
 
             using var flurlTest = new HttpTest();
             flurlTest.RespondWithJson(testResponse);
 
-            var sut = new BumpyQuotesClient(optionsMock.Object);
+            var sut = new BumpyQuotesClient(testBaseAddress);
 
             // Act
             var response = await sut.GetAllQuotesAsync();

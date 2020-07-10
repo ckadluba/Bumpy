@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Bumpy.Frontend.Configuration;
 using Flurl;
 using Flurl.Http;
-using Microsoft.Extensions.Options;
 
 namespace Bumpy.Frontend.Data
 {
@@ -12,14 +10,10 @@ namespace Bumpy.Frontend.Data
     {
         private readonly string _baseAddress;
 
-        public BumpyQuotesClient(IOptions<QuotesServiceOptions> options)
+        public BumpyQuotesClient(Uri baseAddress)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            _baseAddress = options.Value.BaseAddress;
+            _baseAddress = baseAddress?.ToString()
+                ?? throw new ArgumentNullException(nameof(baseAddress));
         }
 
         public Task<List<QuoteModel>> GetAllQuotesAsync() =>
