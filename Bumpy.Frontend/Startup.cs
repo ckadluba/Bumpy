@@ -1,3 +1,4 @@
+using System;
 using Bumpy.Frontend.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,7 +23,7 @@ namespace Bumpy.Frontend
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton(services => new BumpyQuotesClient(Configuration.GetServiceUri("bumpy.api.webapi")));
+            services.AddSingleton(services => new BumpyQuotesClient(new Uri("http://bumpy-webapi")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
