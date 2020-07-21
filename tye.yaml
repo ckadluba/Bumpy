@@ -6,7 +6,7 @@
 #
 name: bumpy
 services:
-- name: bumpy.api.webapi
+- name: bumpy-webapi
   project: Bumpy.API.WebApi/Bumpy.API.WebApi.csproj
-- name: bumpy.frontend
+- name: bumpy-frontend
   project: Bumpy.Frontend/Bumpy.Frontend.csproj
