@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bumpy-webapi
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bumpy-webapi
+  template:
+    metadata:
+      labels:
+        app: bumpy-webapi
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: bumpy-webapi
+        image: kadluba.azurecr.io/bumpy/bumpy_webapi:latest
+        ports:
+        - containerPort: 80
+          name: bumpy-webapi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bumpy-webapi
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: bumpy-webapi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bumpy-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bumpy-frontend
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: bumpy-frontend
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: bumpy-frontend
+        image: kadluba.azurecr.io/bumpy/bumpy_frontend:2.0
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+        env:
+        - name: bumpy-webapi
+          value: "bumpy-webapi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bumpy-frontend
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: bumpy-frontend
