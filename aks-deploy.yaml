@@ -16,7 +16,7 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: bumpy-webapi
-        image: kadluba.azurecr.io/bumpy/bumpy_webapi:latest
+        image: kadluba/bumpy_webapi:latest
         ports:
         - containerPort: 80
           name: bumpy-webapi
@@ -44,7 +44,7 @@ spec:
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 1
-  minReadySeconds: 5 
+  minReadySeconds: 5
   template:
     metadata:
       labels:
@@ -54,7 +54,7 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: bumpy-frontend
-        image: kadluba.azurecr.io/bumpy/bumpy_frontend:2.0
+        image: kadluba/bumpy_frontend:latest
         ports:
         - containerPort: 80
         resources:

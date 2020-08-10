@@ -7,6 +7,8 @@
 name: bumpy
 services:
 - name: bumpy-webapi
+  # replicas: 3
   project: Bumpy.API.WebApi/Bumpy.API.WebApi.csproj
 - name: bumpy-frontend
+  # replicas: 3
   project: Bumpy.Frontend/Bumpy.Frontend.csproj

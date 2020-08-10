@@ -23,7 +23,12 @@ namespace Bumpy.Frontend
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            // Service URI from config
             services.AddSingleton(services => new BumpyQuotesClient(new Uri("http://bumpy-webapi")));
+
+            // Tye service discovery
+            ////services.AddSingleton(services => new BumpyQuotesClient(Configuration.GetServiceUri("bumpy-webapi")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

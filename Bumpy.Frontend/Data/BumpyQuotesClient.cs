@@ -16,11 +16,15 @@ namespace Bumpy.Frontend.Data
                 ?? throw new ArgumentNullException(nameof(baseAddress));
         }
 
-        public Task<List<QuoteModel>> GetAllQuotesAsync() =>
-            _baseAddress
+        public async Task<List<QuoteModel>> GetAllQuotesAsync()
+        {
+            Console.WriteLine($"Sending GetAllQuotes request to {_baseAddress}");
+
+            return await _baseAddress
                 .AppendPathSegment("api")
                 .AppendPathSegment("quotes")
                 .GetAsync()
                 .ReceiveJson<List<QuoteModel>>();
+        }
     }
 }
