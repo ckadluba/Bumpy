@@ -2,7 +2,7 @@
 
 ## Source Preparation
 
-Clone Bumpy from github and existing remove Dockerfiles.  
+Clone Bumpy from github and remove existing Dockerfiles.  
    
 ```bash
 git clone https://github.com/ckadluba/Bumpy.git
