@@ -2,8 +2,8 @@
 
 ## Source Preparation
 
-Clone Bumpy from github and remove existing Dockerfiles.  
-   
+Clone Bumpy from github and remove existing Dockerfiles.
+
 ```bash
 git clone https://github.com/ckadluba/Bumpy.git
 cd Bumpy
@@ -14,65 +14,61 @@ rm .\Bumpy.API.WebApi\Dockerfile
 
 ## Create Azure Prerequisites
 
-1. Create Azure resource group.  
-   
+1. Create Azure resource group.
+
    ```bash
    az group create --name tye --location westeurope
    ```
 
-1. Create Azure container registry (ACR).  
-   
+1. Create Azure container registry (ACR).
+
    ```bash
-   az acr create --name tyekadluba --resource-group tye --sku standard --location westeurope  
+   az acr create --name tyekadluba --resource-group tye --sku standard --location westeurope
    ```
-   
-   Output:  
+
+   Output:
    ```json
    "loginServer": "tyekadluba.azurecr.io",
    ```
 
-1. Configure local docker/tye tooling to use ACR registry.  
+1. Create Azure Kubernetes cluster (AKS) and configure it to use the newly created ACR registry.
+
+   ```bash
+   az aks create --resource-group tye --name tye --attach-acr tyekadluba
+   ```
+
+## Configure local Tooling to use ACR Registry and AKS Cluster
+
+1. Configure local docker/tye tooling to use the newly created ACR registry.
 
    ```bash
    az acr login --name tyekadluba
    ```
 
-1. Create Azure Kubernetes cluster (AKS).  
-   
-   ```bash
-   az aks create --resource-group tye --name tye
-   ```
+1. Configure local kubernetes/tye tooling to use the newly created AKS cluster.
 
-2. Configure AKS cluster to use ACR registry.  
-   
-   ```bash
-   az aks update --resource-group tye --name tye --attach-acr tyekadluba
-   ```
-
-3. Configure local kubernetes/tye tooling to use AKS cluster.  
-   
    ```bash
    az aks get-credentials --resource-group tye --name tye
    ```
 
 ## Perform Deployment using Tye
 
-1. Add a `registry:` line in the file tye.yaml in Bumpy source root directory. Use the `loginServer:` value from the output of the `az acr create` command from before. 
-   
+1. Add a `registry:` line in the file tye.yaml in Bumpy source root directory. Use the `loginServer:` value from the output of the `az acr create` command from before.
+
    ```yaml
    name: bumpy
    registry: tyekadluba.azurecr.io
    services:
    ```
 
-1. Deploy 
-   
+1. Deploy
+
    ```bash
    tye deploy
    ```
 
-2. Create RBAC role assignment for the AKS cluster service principal to read the public IP for the load balancer. 
-   
+2. Create RBAC role assignment for the AKS cluster service principal to read the public IP for the load balancer.
+
    Get the relevant info from the following command.
    ```bash
    az aks show --name tye --resource-group tye
@@ -101,8 +97,6 @@ rm .\Bumpy.API.WebApi\Dockerfile
    apiVersion: v1
    kind: Service
    metadata:
-     annotations:
-       service.beta.kubernetes.io/azure-load-balancer-resource-group: tye
      name: bumpy-lb
    spec:
      type: LoadBalancer
@@ -118,7 +112,7 @@ rm .\Bumpy.API.WebApi\Dockerfile
 
 # Check Deployment
 
-## Check Service with Public IP
+## Check Services including Loadbalancer with Public IP
 
 ```bash
 kubectl get service
@@ -127,15 +121,59 @@ kubectl get service
 Output:
 ```
 NAME             TYPE           CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
-bumpy-frontend   ClusterIP      10.0.26.196    <none>        80/TCP         17h
+bumpy-frontend   ClusterIP      10.0.26.196    <none>        80/TCP         17m
 bumpy-lb         LoadBalancer   10.0.23.35     40.74.6.0     80:30900/TCP   5s
-bumpy-webapi     ClusterIP      10.0.149.206   <none>        80/TCP         17h
+bumpy-webapi     ClusterIP      10.0.149.206   <none>        80/TCP         17m
 ```
 
-## Check Pod with all Tye Environment Variables for Service Discovery
+## Check Loadbalancer Creation and Backend Endpoint(s)
 
 ```bash
-kubectl describe pod <bumpy-frontend-pod-name>
+kubectl describe service bumpy-lb
+```
+
+Output:
+```
+Name:                     bumpy-lb
+Namespace:                default
+Labels:                   <none>
+Annotations:              Selector:  app.kubernetes.io/name=bumpy-frontend
+Type:                     LoadBalancer
+IP:                       10.0.23.35
+LoadBalancer Ingress:     40.74.6.0
+Port:                     <unset>  80/TCP
+TargetPort:               80/TCP
+NodePort:                 <unset>  30487/TCP
+Endpoints:                10.244.2.2:80
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:
+  Type    Reason                Age   From                Message
+  ----    ------                ----  ----                -------
+  Normal  EnsuringLoadBalancer  77s   service-controller  Ensuring load balancer
+  Normal  EnsuredLoadBalancer   73s   service-controller  Ensured load balancer
+```
+
+## Check Pods and their IPs
+
+```bash
+kubectl get pods -o wide
+```
+
+Output:
+```
+NAME                              READY   STATUS    RESTARTS   AGE   IP           NODE
+   NOMINATED NODE   READINESS GATES
+bumpy-frontend-6c677df5d9-6g8sb   1/1     Running   0          29m   10.244.2.2   aks-nodepool1-10248936-vmss000002   <none>           <none>
+bumpy-webapi-7d8bc67d87-frp9k     1/1     Running   0          29m   10.244.1.3   aks-nodepool1-10248936-vmss000001   <none>           <none>
+```
+
+Note: bumpy-frontend-6c677df5d9-6g8sb IP address (10.244.2.2) is included in Endpoints list shown by `kubectl describe service bumpy-lb`.
+
+## Check Pod with Tye Environment Variables for Service Discovery
+
+```bash
+kubectl describe pod bumpy-frontend-6c677df5d9-6g8sb
 ```
 
 Output:
@@ -150,6 +188,33 @@ Output:
       SERVICE__BUMPY-WEBAPI__PROTOCOL:         http
       SERVICE__BUMPY-WEBAPI__PORT:             80
       SERVICE__BUMPY-WEBAPI__HOST:             bumpy-webapi
+```
+
+## Check Logs from a Pod
+
+```bash
+kubectl logs bumpy-frontend-6c677df5d9-6g8sb
+```
+
+Output:
+```
+warn: Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository[60]
+      Storing keys in a directory '/root/.aspnet/DataProtection-Keys' that may not be persisted outside of the container. Protected data will be unavailable when container is destroyed.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {a91c58e1-e02c-4929-b8d7-8f30f8394648} may be persisted to storage in unencrypted form.
+info: Microsoft.Hosting.Lifetime[0]
+      Now listening on: http://[::]:80
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /app
+warn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]
+      Failed to determine the https port for redirect.
+Sending GetAllQuotes request to http://bumpy-webapi/
+Sending GetAllQuotes request to http://bumpy-webapi/
+Sending GetAllQuotes request to http://bumpy-webapi/
 ```
 
 ## Check Kubernetes Deployment Manifest generated by Tye
